@@ -17,10 +17,10 @@ public class GameRangeEnemyController : GameEnemyController
         IsAttacking = false;
         if(distance <= followRange)
         {
-            if(distance <= ShootRange)
+            if (distance <= ShootRange)
             {
-                int layerMaskTarget = Stats.CurrentStates.attackSO.target;
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 11f, (1<< LayerMask.NameToLayer("Level")));
+                int layerMaskTarget = Stats.CurrentStats.attackSO.target;
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 11f, (1<< LayerMask.NameToLayer("Player")));
 
                 if (hit.collider != null && layerMaskTarget  == (layerMaskTarget | (1 << hit.collider.gameObject.layer)))
                 {

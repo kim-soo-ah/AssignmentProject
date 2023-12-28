@@ -86,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(knockbackDuration > 0.0f)
         {
-            direction += _knockback;
+            _rigidbody2D.velocity += new Vector2( _knockback.x, 0);
         }
     }
 }
