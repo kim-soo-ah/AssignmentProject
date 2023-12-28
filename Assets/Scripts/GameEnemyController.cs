@@ -26,6 +26,11 @@ public class GameEnemyController : PlayerController
 
     protected float DistanceToTarget()
     {
+        if(ClosetTarget == null)
+        {
+            gameManager.Player = GameObject.FindGameObjectWithTag("Player").transform;
+            ClosetTarget = gameManager.Player;
+        }
         return Vector3.Distance(transform.position, ClosetTarget.position);
     }
 

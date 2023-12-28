@@ -8,8 +8,8 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     private CharacterStatsHandler _stats;
     private Vector2 _movementDirection = Vector2.zero;
-    public float moveSpeed;
-    public float jumpPower;
+    //public float moveSpeed;
+    //public float jumpPower;
     bool isJumpAvailable;
 
     private Vector2 _knockback = Vector2.zero;
@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
         if (isJumpAvailable)
         {
             isJumpAvailable = false;
-            _rigidbody2D.AddForce(Vector3.up * jumpPower, ForceMode2D.Impulse);
+            _rigidbody2D.AddForce(Vector3.up * _stats.CurrentStats.jumpPower, ForceMode2D.Impulse);
         }
         else return;
     }
@@ -73,11 +73,11 @@ public class PlayerMovement : MonoBehaviour
         //_rigidbody2D.velocity = direction;
         if (direction.x > 0)
         {
-            _rigidbody2D.velocity = new Vector2(moveSpeed, _rigidbody2D.velocity.y);
+            _rigidbody2D.velocity = new Vector2(_stats.CurrentStats.speed, _rigidbody2D.velocity.y);
         }
         else if (direction.x < 0)
         {
-            _rigidbody2D.velocity = new Vector2((-1 * moveSpeed), _rigidbody2D.velocity.y);
+            _rigidbody2D.velocity = new Vector2((-1 * _stats.CurrentStats.speed), _rigidbody2D.velocity.y);
         }
         else
         {

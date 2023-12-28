@@ -8,6 +8,7 @@ public class GameShooting : MonoBehaviour
 {
     private ProjectileManager projectileManager;
     private PlayerController playerController;
+    
 
     [SerializeField] private Transform projectileSpawnPosition;
     private Vector2 _aimDirection = Vector2.zero;

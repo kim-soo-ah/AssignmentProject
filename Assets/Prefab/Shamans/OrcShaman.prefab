@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4744987981686449694}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BulletSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6339682067619481973}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: WeaponPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,7 +84,7 @@ GameObject:
   - component: {fileID: 5604574490208935938}
   - component: {fileID: 4684120499799381507}
   - component: {fileID: 6521060974356263782}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: OrcShaman
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ Transform:
   - {fileID: 7555227137172059557}
   - {fileID: 6339682067619481973}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &9079861067210312174
 BoxCollider2D:
@@ -168,7 +168,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -195,6 +195,8 @@ MonoBehaviour:
   baseStats:
     statsChangeType: 2
     maxHealth: 3
+    speed: 2
+    jumpPower: 0
     attackSO: {fileID: 11400000, guid: 7ee42277f3fa9144d865c01812e4878c, type: 2}
   statsModifiers: []
 --- !u!114 &1157009001650830941
@@ -251,6 +253,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileSpawnPosition: {fileID: 4744987981686449694}
+  shootingClip: {fileID: 0}
 --- !u!114 &5393043645521187978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,8 +266,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 060c630477294324fb943df466aabcef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
-  jumpPower: 0
 --- !u!114 &5604574490208935938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,6 +294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthChangeDelay: 0.5
+  damageClip: {fileID: 0}
 --- !u!114 &6521060974356263782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,7 +318,7 @@ GameObject:
   - component: {fileID: 7555227137172059557}
   - component: {fileID: 8979434226570176665}
   - component: {fileID: 6924316983233270972}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MainSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -421,7 +423,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3145711268406778233}
   - component: {fileID: 1084584181273588049}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: WeaponSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
