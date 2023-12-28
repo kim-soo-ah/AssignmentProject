@@ -12,7 +12,7 @@ public class GameShooting : MonoBehaviour
     [SerializeField] private Transform projectileSpawnPosition;
     private Vector2 _aimDirection = Vector2.zero;
 
-
+    public AudioClip shootingClip;
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
@@ -20,7 +20,7 @@ public class GameShooting : MonoBehaviour
 
     private void Start()
     {
-        projectileManager = SingletonHandler<ProjectileManager>.Instance.GetComponent<ProjectileManager>();
+        projectileManager = ProjectileManager.Instance;
         playerController.OnAttackEvent += OnShoot;
         playerController.OnLookEvent += OnAim;
     }
@@ -55,6 +55,10 @@ public class GameShooting : MonoBehaviour
             RotateVector2(_aimDirection,angle),
             rangedAttackData
             );
+        if(shootingClip)
+        {
+            SoundManager.PlayClip(shootingClip);
+        }
     }
 
     private static Vector2 RotateVector2( Vector2 v, float degree)
