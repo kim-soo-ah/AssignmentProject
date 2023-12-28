@@ -6,15 +6,17 @@ public class PlayerMovement : MonoBehaviour
 {
     private PlayerController _controller;
     private Rigidbody2D _rigidbody2D;
+    private CharacterStatsHandler _stats;
     private Vector2 _movementDirection = Vector2.zero;
     public float moveSpeed;
     public float jumpPower;
     bool isJumpAvailable;
-    private SpriteRenderer _spriteRenderer;
 
+    private Vector2 _knockback = Vector2.zero;
+    private float knockbackDuration = 0.0f;
     private void Awake()
     {
-        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _stats = GetComponent<CharacterStatsHandler>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _controller = GetComponent<PlayerController>();
     }
@@ -28,12 +30,18 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         ApplyMovement(_movementDirection);
+        if(knockbackDuration > 0.0f)
+        {
+            knockbackDuration -= Time.fixedDeltaTime;
+        }
     }
 
     private void Move(Vector2 direction)
     {
         _movementDirection = direction;
     }
+
+    
 
     private void Jump(bool isJump)
     {
@@ -50,25 +58,35 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isJumpAvailable = true;
-            Debug.Log("adsfasdfasdfasdf");
         }
+    }
+
+    public void ApplyKnockback(Transform other, float power, float duration)
+    {
+        knockbackDuration = duration;
+        _knockback = -(other.position - transform.position).normalized * power;
     }
 
     public void ApplyMovement(Vector2 direction)
     {
+        //direction = direction * _stats.CurrentStates.speed;
+        //_rigidbody2D.velocity = direction;
         if (direction.x > 0)
         {
             _rigidbody2D.velocity = new Vector2(moveSpeed, _rigidbody2D.velocity.y);
-            //_spriteRenderer.flipX = false;
         }
         else if (direction.x < 0)
         {
             _rigidbody2D.velocity = new Vector2((-1 * moveSpeed), _rigidbody2D.velocity.y);
-            //_spriteRenderer.flipX = true;
         }
         else
         {
             _rigidbody2D.velocity = new Vector2(0, _rigidbody2D.velocity.y);
+        }
+
+        if(knockbackDuration > 0.0f)
+        {
+            direction += _knockback;
         }
     }
 }

@@ -7,11 +7,18 @@ public class PlayerController : MonoBehaviour
 {
     public event Action<Vector2> OnMoveEvent;
     public event Action<Vector2> OnLookEvent;
-    public event Action OnAttackEvent;
+    public event Action<AttackSO> OnAttackEvent;
     public event Action<bool> OnJumpEvent;
 
     private float _timeSinceLastAttack = float.MaxValue;
     protected bool IsAttacking {  get; set; }
+
+    protected CharacterStatsHandler Stats {  get; private set; }
+
+    protected virtual void Awake()
+    {
+        Stats = GetComponent<CharacterStatsHandler>();
+    }
 
     protected virtual void Update()
     {
@@ -20,15 +27,17 @@ public class PlayerController : MonoBehaviour
 
     private void HandleAttackDelay()
     {
-        if(_timeSinceLastAttack <= 0.2f)
+        if(Stats.CurrentStates.attackSO == null)
+           return;
+        if(_timeSinceLastAttack <= Stats.CurrentStates.attackSO.delay)
         {
             _timeSinceLastAttack += Time.deltaTime;
         }
 
-        if(IsAttacking && _timeSinceLastAttack > 0.2f)
+        if(IsAttacking && _timeSinceLastAttack > Stats.CurrentStates.attackSO.delay)
         {
             _timeSinceLastAttack = 0;
-            CallAttackEvent();
+            CallAttackEvent(Stats.CurrentStates.attackSO);
         }
     }
     public void CallMoveEvent(Vector2 direction)
@@ -46,8 +55,8 @@ public class PlayerController : MonoBehaviour
         OnLookEvent?.Invoke(direction);
     }
 
-    public void CallAttackEvent()
+    public void CallAttackEvent(AttackSO attackSO)
     {
-        OnAttackEvent?.Invoke();
+        OnAttackEvent?.Invoke(attackSO);
     }
 }
