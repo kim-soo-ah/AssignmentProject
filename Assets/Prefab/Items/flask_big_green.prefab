@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 928094babbe85384b9d368303c59154f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyOnPickup: 0
+  destroyOnPickup: 1
   canBePickupBy:
     serializedVersion: 2
     m_Bits: 256
