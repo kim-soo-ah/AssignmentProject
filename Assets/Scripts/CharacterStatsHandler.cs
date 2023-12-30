@@ -67,8 +67,9 @@ public class CharacterStatsHandler : MonoBehaviour
             {
                 UpdateStats((o, o1) => o * o1, modifier);
             }
+            Debug.Log(modifier.maxHealth);
         }
-
+        
         LimitAllStats();
 
     }

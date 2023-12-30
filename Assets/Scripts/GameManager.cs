@@ -29,14 +29,19 @@ public class GameManager : SingletonHandler<GameManager>
     [SerializeField] private Transform spawnPositionsRoot;
     private List<Transform> spawnPositions = new List<Transform>();
 
+    public List<GameObject> rewards = new List<GameObject>();
+
+    [SerializeField] private CharacterStats defaultStats;
+    [SerializeField] private CharacterStats rangedStats;
+
     protected override void Awake()
     {
         base.Awake();
         Player = GameObject.FindGameObjectWithTag(playerTag).transform;
 
         playerHealthSystem = Player.GetComponent<HealthSystem>();
-        playerHealthSystem.OnDamage += UpdateHealthUI;
-        playerHealthSystem.OnHeal += UpdateHealthUI;
+        //playerHealthSystem.OnDamage += UpdateHealthUI;
+        //playerHealthSystem.OnHeal += UpdateHealthUI;
         playerHealthSystem.OnDeath += GameOver;
 
         gameOverUI.SetActive(false);
@@ -49,7 +54,13 @@ public class GameManager : SingletonHandler<GameManager>
 
     private void Start()
     {
+        UpgradeStatInit();
         StartCoroutine("StartNextWave");
+    }
+
+    private void Update()
+    {
+        UpdateHealthUI();
     }
 
     IEnumerator StartNextWave()//ÄÚ·çÆ¾
@@ -61,6 +72,11 @@ public class GameManager : SingletonHandler<GameManager>
                 UpdateWaveUI();
                 yield return new WaitForSeconds(2f);
 
+                if(currentWaveIndex % 20 == 0)
+                {
+                    RandomUpgrade();
+                }
+
                 if(currentWaveIndex % 10 == 0)
                 {
                     waveSpawnPosCount = waveSpawnPosCount + 1 > spawnPositions.Count ? waveSpawnPosCount : waveSpawnPosCount + 1;
@@ -69,7 +85,7 @@ public class GameManager : SingletonHandler<GameManager>
 
                 if(currentWaveIndex % 5 == 0)
                 {
-
+                    CreateReward();
                 }
 
                 if(currentWaveIndex % 3 == 0)
@@ -85,7 +101,8 @@ public class GameManager : SingletonHandler<GameManager>
                         int prefabIdx = Random.Range(0, enemyPrefabs.Count);
                         GameObject enemy = Instantiate(enemyPrefabs[prefabIdx], spawnPositions[posIdx].position, Quaternion.identity);
                         enemy.GetComponent<HealthSystem>().OnDeath += OnEnemyDeath;
-                        //enemy.GetComponent<CharacterStatsHandler>();
+                        enemy.GetComponent<CharacterStatsHandler>().AddStatModifier(defaultStats);
+                        enemy.GetComponent<CharacterStatsHandler>().AddStatModifier(rangedStats);
                         currentSpawnCount++;
                         yield return new WaitForSeconds(spawnInterval);
                     }
@@ -126,5 +143,60 @@ public class GameManager : SingletonHandler<GameManager>
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+    void CreateReward()
+    {
+        int idx = Random.Range(0, rewards.Count);
+        int posIdx = Random.Range(0, spawnPositions.Count);
+
+        GameObject obj = rewards[idx];
+        Instantiate(obj, spawnPositions[posIdx].position, Quaternion.identity);
+    }
+
+    void UpgradeStatInit()
+    {
+        defaultStats.statsChangeType = StatsChangeType.Add;
+        defaultStats.attackSO = Instantiate(defaultStats.attackSO);
+
+        rangedStats.statsChangeType = StatsChangeType.Add;
+        rangedStats.attackSO = Instantiate(rangedStats.attackSO);
+    }
+
+    void RandomUpgrade()
+    {
+        switch (Random.Range(0, 6))
+        {
+            case 0:
+                defaultStats.maxHealth += 2;
+                break;
+
+            case 1:
+                defaultStats.attackSO.power += 1;
+                break;
+
+            case 2:
+                defaultStats.speed += 0.1f;
+                break;
+
+            case 3:
+                defaultStats.attackSO.isOnKnockback = true;
+                defaultStats.attackSO.knockbackPower += 1;
+                defaultStats.attackSO.knockbackTime = 0.1f;
+                break;
+
+            case 4:
+                defaultStats.attackSO.delay -= 0.05f;
+                break;
+
+            case 5:
+                RangedAttackData rangedAttackData = rangedStats.attackSO as RangedAttackData;
+                rangedAttackData.numberofProjectilesPerShot += 1;
+                break;
+
+            default:
+                break;
+
+        }
     }
 }

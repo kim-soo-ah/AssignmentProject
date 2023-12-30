@@ -39,7 +39,7 @@ public class GameShooting : MonoBehaviour
 
         float minAngle = -(numberofProjectilesPerShot / 2f) * projectilesAngleSpace + 0.5f * rangedAttackData.multipleProjectilesAngel;
 
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < numberofProjectilesPerShot; i++)
         {
             float angle = minAngle + projectilesAngleSpace * i;
             float randomSpread = Random.Range(-rangedAttackData.spread, rangedAttackData.spread);
